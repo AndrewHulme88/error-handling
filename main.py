@@ -1,75 +1,80 @@
-# Define custom exceptions
+# Custom exceptions
 class CustomValueError(ValueError):
     pass
 
-class CustomOperationError(ValueError):
+class OutOfRangeError(ValueError):
     pass
 
-def get_valid_input(prompt, validator, error_message):
+def menu():
+    print("\nError Handling Demonstrations:")
+    print("1. Division Operation")
+    print("2. Age Validator")
+    print("3. File Operation")
+    print("4. Exit")
+    choice = input("Choose an option (1-4): ")
+    return choice
+
+def get_input(prompt, error_type=None, min_val=None, max_val=None):
     while True:
         try:
-            value = input(prompt)
-            if not validator(value):
-                raise CustomValueError(error_message)
-            return int(value)
+            value = int(input(prompt))
+            if error_type == 'age':
+                if value < min_val or value > max_val:
+                    raise OutOfRangeError(f"Age must be between {min_val} and {max_val}")
+            return value
         except ValueError:
-            print("Invalid input. Please enter a number.")
-        except CustomValueError as e:
+            print("Please enter a valid number.")
+        except OutOfRangeError as e:
             print(e)
 
-def divide_numbers():
-    dividend = get_valid_input("Enter the dividend: ", lambda x: True, "Invalid input")
-    divisor = get_valid_input("Enter the divisor: ", lambda x: x != "0", "Cannot divide by zero")
-
+def division_operation():
     try:
-        result = dividend / divisor
-    except TypeError:
-        print("Both inputs must be numbers!")
+        a = get_input("Enter dividend: ")
+        b = get_input("Enter divisor: ")
+        result = a / b
+    except ZeroDivisionError:
+        print("Cannot divide by zero! Please try again.")
     else:
-        print(f"The result of division is: {result}")
+        print(f"Result of {a} / {b} = {result}")
+    finally:
+        print("Division attempt completed.")
 
-def perform_addition():
-    num1 = get_valid_input("Enter the first number: ", lambda x: True, "Invalid input")
-    num2 = get_valid_input("Enter the second number: ", lambda x: True, "Invalid input")
+def age_validator():
+    age = get_input("Enter your age: ", error_type='age', min_val=0, max_val=120)
+    if age:
+        print(f"Your age, {age}, has been validated.")
 
+def file_operation():
     try:
-        result = num1 + num2
-    except TypeError:
-        print("Addition requires numeric values.")
-    else:
-        print(f"The sum is: {result}")
+        # Attempt to open a non-existent file
+        with open('non_existent_file.txt', 'r') as file:
+            content = file.read()
+    except FileNotFoundError:
+        print("The file does not exist. Would you like to create it? (y/n)")
+        choice = input().lower()
+        if choice == 'y':
+            with open('non_existent_file.txt', 'w') as file:
+                file.write("This file was created due to a FileNotFoundError.")
+            print("File has been created.")
+        else:
+            print("Operation cancelled.")
+    except IOError as e:
+        print(f"An I/O error occurred: {e}")
 
-def access_list_element():
-    my_list = [1, 2, 3]
-    index = get_valid_input("Enter an index to access the list: ", lambda x: x.isdigit(), "Index must be a positive integer")
-
-    try:
-        element = my_list[index]
-    except IndexError:
-        print("The index you entered is out of range.")
-    else:
-        print(f"The element at index {index} is {element}")
-
-def menu():
+def main():
     while True:
-        print("\nError Handling Menu:")
-        print("1. Division")
-        print("2. Addition")
-        print("3. Access List Element")
-        print("4. Exit")
-        choice = input("Choose an operation: ")
-
-        if choice == "1":
-            divide_numbers()
-        elif choice == "2":
-            perform_addition()
-        elif choice == "3":
-            access_list_element()
-        elif choice == "4":
-            print("Exiting program.")
+        choice = menu()
+        if choice == '1':
+            division_operation()
+        elif choice == '2':
+            age_validator()
+        elif choice == '3':
+            file_operation()
+        elif choice == '4':
+            print("Exiting the program. Goodbye!")
             break
         else:
-            print("Invalid choice. Please choose a number from the menu.")
+            print("Invalid choice. Please select again.")
 
 if __name__ == "__main__":
-    menu()
+    main()
