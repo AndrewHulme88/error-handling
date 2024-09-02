@@ -1,0 +1,11 @@
+BikeID,BikeName,Brand,Category,EngineCapacity (cc),Price,Year
+1,Ninja,Kawasaki,Sport,998,15999,2022
+2,Street,Triumph,Naked,765,10999,2021
+3,F850GS,BMW,Adventure,853,13700,2024
+4,Classic 350,Royal Enfield,Classic,349,4799,2020
+5,CMX 500,Honda,Cruiser,500,9999,2019
+6,Street,Harley-Davidson,Cruiser,883,9999,2017
+7,YZF-R3,Yamaha,Sport,321,5599,2021
+8,Monster,Ducati,Naked,937,12999,2022
+9,390 Duke,KTM,Naked,373,5699,2020
+10,GS 500,Suzuki,Sport,500,8999,2015
