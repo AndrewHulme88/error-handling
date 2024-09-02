@@ -1,19 +1,13 @@
-SELECT
-    c.customer_id,
-    c.first_name,
-    c.last_name,
-    COUNT(o.order_id) AS total_orders,
-    SUM(o.order_amount) AS total_amount_spent
-FROM
-    customers c
-JOIN
-    orders o ON c.customer_id = o.customer_id
-JOIN
-    products p ON o.product_id = p.product_id
-WHERE
-    p.category = 'Guitar' AND
-    o.order_date BETWEEN '2022-01-01' AND '2023-01-01'
-GROUP BY
-    c.customer_id, c.first_name, c.last_name
-ORDER BY
-    total_amount_spent DESC;
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, password_hash) VALUES
+('my_name', 'my_super_secret_password');
+
+SELECT user_id, username
+FROM users
+WHERE username = 'my_name' AND password_hash = 'my_super_secret_password';
